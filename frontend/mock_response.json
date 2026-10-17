@@ -1,0 +1,13 @@
+{
+  "risk_score": 0.72,
+  "label": "higher_risk",
+  "model_name": "xgboost",
+  "top_features": [
+    {"name": "PPE", "value": 0.31, "shap": 0.18},
+    {"name": "spread1", "value": -4.1, "shap": 0.12},
+    {"name": "MDVP:Fo(Hz)", "value": 119.9, "shap": 0.07},
+    {"name": "HNR", "value": 24.6, "shap": -0.05},
+    {"name": "NHR", "value": 0.011, "shap": -0.09}
+  ],
+  "warnings": []
+}
