@@ -1,5 +1,5 @@
 // ---- Config ----
-const USE_MOCK = true;                    // set false when the real API exists
+const USE_MOCK = true;                    // test pipeline not real model
 const API_URL = "/predict";               // POST, multipart field "audio"
 const MOCK_URL = "mock_response.json";
 const MIN_SECONDS = 5;
