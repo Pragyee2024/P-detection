@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Voice Screening</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+  <main>
+    <section id="screen-record" class="screen">
+      <h1>Voice Screening</h1>
+      <p>Say "aaah" steadily for 5 seconds</p>
+      <button id="btn-record">Record</button>
+      <p id="timer">0:00</p>
+      <audio id="playback" controls></audio>
+      <button id="btn-submit">Submit</button>
+      <p class="disclaimer">Screening aid, not a diagnosis.</p>
+    </section>
+
+    <section id="screen-processing" class="screen">
+      <div class="spinner"></div>
+      <p>Analyzing your voice…</p>
+      <button id="btn-cancel">Cancel</button>
+    </section>
+
+    <section id="screen-results" class="screen">
+      <h2 id="risk-score">0.37</h2>
+      <p id="risk-label">Low risk</p>
+      <div id="chart">Chart goes here</div>
+      <p id="explanation">This is a screening aid. Please consult a doctor.</p>
+      <button id="btn-again">Record again</button>
+      <p class="disclaimer">Screening aid, not a diagnosis. Consult a medical professional.</p>
+    </section>
+
+    <section id="screen-error" class="screen">
+      <h2>Something went wrong</h2>
+      <p id="error-reason">Reason goes here</p>
+      <button id="btn-retry">Retry</button>
+    </section>
+  </main>
+  <script src="app.js"></script>
+</body>
+</html>
