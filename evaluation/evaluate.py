@@ -8,7 +8,7 @@ import numpy as np
 import pandas as pd
 from sklearn.metrics import (accuracy_score, precision_score, recall_score,
                              f1_score, roc_auc_score, roc_curve,
-                             confusion_matrix)
+                             confusion_matrix, balanced_accuracy_score)
 
 PRED_DIR = "evaluation/predictions"
 OUT_DIR = Path("evaluation/results")
@@ -19,10 +19,14 @@ OUT_DIR.mkdir(parents=True, exist_ok=True)
 def score(y_true, y_proba):
     y_pred = (y_proba >= THRESHOLD).astype(int)
     auc = roc_auc_score(y_true, y_proba) if len(set(y_true)) > 1 else np.nan
+    tn, fp, fn, tp = confusion_matrix(y_true, y_pred, labels=[0, 1]).ravel()
+    spec = tn / (tn + fp) if (tn + fp) > 0 else np.nan
     return {
         "accuracy": accuracy_score(y_true, y_pred),
         "precision": precision_score(y_true, y_pred, zero_division=0),
         "recall": recall_score(y_true, y_pred, zero_division=0),
+        "specificity": spec,
+        "balanced_acc": balanced_accuracy_score(y_true, y_pred),
         "f1": f1_score(y_true, y_pred, zero_division=0),
         "roc_auc": auc,
     }
@@ -93,7 +97,8 @@ plt.close()
 
 # --- Chart 3: metric bars (recording level) ---
 rec_table = table[table["level"] == "recording"].set_index("model")
-metrics = ["accuracy", "precision", "recall", "f1", "roc_auc"]
+metrics = ["accuracy", "precision", "recall", "specificity",
+           "balanced_acc", "f1", "roc_auc"]
 rec_table[metrics].plot(kind="bar", figsize=(9, 5))
 plt.ylim(0, 1.05)
 plt.ylabel("Score")
