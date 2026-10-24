@@ -1,2 +1,5 @@
 evaluation/predictions/dummy_*.csv
 evaluation/results/
+evaluation/predictions/
+evaluation/dummy/
+.venv/
