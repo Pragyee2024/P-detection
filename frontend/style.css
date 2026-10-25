@@ -101,6 +101,30 @@ audio {
   margin-top: 24px;
 }
 
+/*Result Screen */
+#risk-score {
+  font-size: 3.5rem;
+  margin: 8px 0 0;
+  color: var(--primary);
+}
+
+#risk-label {
+  font-size: 1.2rem;
+  font-weight: 600;
+  margin: 0 0 16px;
+}
+
+#chart {
+  position: relative;
+  height: 260px;
+  margin: 16px 0;
+}
+
+#explanation {
+  font-size: .95rem;
+  color: var(--muted);
+}
+
 @keyframes spin {
     to { 
             transform: rotate(360deg); 
