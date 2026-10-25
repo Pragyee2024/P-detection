@@ -210,7 +210,12 @@ function drawChart(features) {
         legend: { display: false },
         title: { display: true, text: "Top features (red raises risk, blue lowers it)" },
       },
-      scales: { x: { title: { display: true, text: "SHAP value" } } },
+      scales: {
+          x: { title: { display: true, text: "SHAP value" } },
+          y: { ticks: { autoSkip: false } },
+      },
+      responsive: true,
+      maintainAspectRatio: false
     },
   });
 }
