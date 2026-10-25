@@ -125,6 +125,14 @@ audio {
   color: var(--muted);
 }
 
+#risk-score[data-level="low"], #risk-label[data-level="low"] { 
+    color: #2f855a; 
+}
+
+#risk-score[data-level="high"], #risk-label[data-level="high"] { 
+    color: var(--danger); 
+}
+
 /* Error screen */
 #screen-error h2 {
   color: var(--danger);
