@@ -89,6 +89,18 @@ audio {
     margin: 8px 0; 
 }
 
+/*Processing Screen */
+#screen-processing p {
+  color: var(--muted);
+}
+
+#btn-cancel {
+  background: transparent;
+  color: var(--muted);
+  border: 1px solid #ccc;
+  margin-top: 24px;
+}
+
 @keyframes spin {
     to { 
             transform: rotate(360deg); 
