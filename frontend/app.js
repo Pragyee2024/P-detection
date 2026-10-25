@@ -179,6 +179,10 @@ function renderResults(d) {
   const text = d.label.replace(/_/g, " ");
   $("risk-label").textContent = text.charAt(0).toUpperCase() + text.slice(1);
 
+  const level = d.risk_score >= 0.5 ? "high" : "low";
+  $("risk-score").dataset.level = level;
+  $("risk-label").dataset.level = level;
+
   // warnings (shown above the explanation, cleared each run)
   let w = $("warnings");
   if (!w) {
