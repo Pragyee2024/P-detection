@@ -41,3 +41,9 @@
 - Baseline is 75.4% accuracy, so 0.81 is only modestly above it
 - High recall partly reflects the 75% Parkinson's majority class
 - TODO: add specificity and balanced accuracy to evaluate.py
+
+## Predictions format 
+Save each model's out-of-fold predictions to evaluation/predictions/<model_name>.csv
+Required columns: subject, y_true, y_proba (y_proba in [0, 1], no blanks)
+The filename becomes the model name in the tables and charts (e.g. svm.csv).
+Test: python evaluation\evaluate.py
