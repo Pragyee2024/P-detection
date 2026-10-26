@@ -1,6 +1,6 @@
 import glob
 from pathlib import Path
-
+import argparse, sys
 import matplotlib
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
@@ -10,10 +10,30 @@ from sklearn.metrics import (accuracy_score, precision_score, recall_score,
                              f1_score, roc_auc_score, roc_curve,
                              confusion_matrix, balanced_accuracy_score)
 
-PRED_DIR = "evaluation/predictions"
-OUT_DIR = Path("evaluation/results")
-THRESHOLD = 0.5
+
+
+ap = argparse.ArgumentParser()
+ap.add_argument("--threshold", type=float, default=0.5)
+ap.add_argument("--pred-dir", default="evaluation/predictions")
+ap.add_argument("--out-dir", default="evaluation/results")
+args = ap.parse_args()
+
+PRED_DIR = args.pred_dir
+OUT_DIR = Path(args.out_dir)
+THRESHOLD = args.threshold
 OUT_DIR.mkdir(parents=True, exist_ok=True)
+
+REQUIRED = {"subject", "y_true", "y_proba"}
+
+
+def load_predictions(path):
+    df = pd.read_csv(path)
+    missing = REQUIRED - set(df.columns)
+    if missing:
+        sys.exit(f"{path}: missing columns {sorted(missing)}")
+    if df["y_proba"].isna().any() or not df["y_proba"].between(0, 1).all():
+        sys.exit(f"{path}: y_proba must be in [0, 1] with no blanks")
+    return df
 
 
 def score(y_true, y_proba):
@@ -38,10 +58,14 @@ def to_subject_level(df):
     return g.reset_index()
 
 
+files = sorted(glob.glob(f"{PRED_DIR}/*.csv"))
+if not files:
+    sys.exit(f"No CSVs found in {PRED_DIR}")
+
 rows, preds = [], {}
-for path in sorted(glob.glob(f"{PRED_DIR}/*.csv")):
+for path in files:
     model = Path(path).stem
-    df = pd.read_csv(path)
+    df = load_predictions(path)
     preds[model] = df
 
     rec = score(df["y_true"].to_numpy(), df["y_proba"].to_numpy())
@@ -54,6 +78,12 @@ for path in sorted(glob.glob(f"{PRED_DIR}/*.csv")):
                  "n": len(sub_df), **sub})
 
 table = pd.DataFrame(rows).round(3)
+ref_name, ref_df = next(iter(preds.items()))
+for m, d in preds.items():
+    if len(d) != len(ref_df) or set(d["subject"]) != set(ref_df["subject"]):
+        print(f"WARNING: {m} does not cover the same subjects/rows as "
+              f"{ref_name}. Comparison may be unfair (different split?).")
+
 table.to_csv(OUT_DIR / "comparison.csv", index=False)
 with open(OUT_DIR / "comparison.md", "w") as f:
     f.write(table.to_markdown(index=False))
